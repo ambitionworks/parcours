@@ -20,6 +20,13 @@ class SynchronizeGarminConnect implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
+    /**
+     * The number of seconds the job can run before timing out.
+     *
+     * @var int
+     */
+    public $timeout = 300;
+
     private int $perPage = 50;
 
     public User $user;
@@ -61,40 +68,41 @@ class SynchronizeGarminConnect implements ShouldQueue
                 $searching = false;
             }
 
-            // If it is no longer returning activities, we're done.
-            if (!count($activities)) {
-                $searching = false;
-            }
-            foreach ($activities as $activity) {
-                // If this activity ID is less than or equal our highwater,
-                // we're now done.
-                if ($activity->activityId <= $highwater) {
+            if (isset($activities)) {
+                // If it is no longer returning activities, we're done.
+                if (!count($activities)) {
                     $searching = false;
-                } else {
-                    Log::warning(sprintf('Processing activityId %d', $activity->activityId));
-                    // This is a processable activity.
-                    // Record the potential new highwater value.
-                    if ($activity->activityId > $next_highwater) {
-                        $next_highwater = $activity->activityId;
-                    }
+                }
+                foreach ($activities as $activity) {
+                    // If this activity ID is less than or equal our highwater,
+                    // we're now done.
+                    if ($activity->activityId <= $highwater) {
+                        $searching = false;
+                    } else {
+                        Log::warning(sprintf('Processing activityId %d', $activity->activityId));
+                        // This is a processable activity.
+                        // Record the potential new highwater value.
+                        if ($activity->activityId > $next_highwater) {
+                            $next_highwater = $activity->activityId;
+                        }
 
-                    $zipFile = 'garmin_connect_activity/' . $activity->activityId . '.zip';
-                    $fitFile = 'garmin_connect_activity/' . $activity->activityId . '.fit';
-                    if (!Storage::exists($fitFile)) {
-                        Storage::put($zipFile, $this->user->garmin_connect_profile->api()->getDataFile(GarminConnect::DATA_TYPE_FIT, $activity->activityId));
+                        $zipFile = 'garmin_connect_activity/' . $activity->activityId . '.zip';
+                        $fitFile = 'garmin_connect_activity/' . $activity->activityId . '.fit';
+                        if (!Storage::exists($fitFile)) {
+                            Storage::put($zipFile, $this->user->garmin_connect_profile->api()->getDataFile(GarminConnect::DATA_TYPE_FIT, $activity->activityId));
 
-                        $zip = new ZipArchive;
-                        $zip->open(storage_path('app/' . $zipFile));
-                        $zip->extractTo(storage_path('app/garmin_connect_activity/'));
+                            $zip = new ZipArchive;
+                            $zip->open(storage_path('app/' . $zipFile));
+                            $zip->extractTo(storage_path('app/garmin_connect_activity/'));
 
-                        Storage::delete($zipFile);
+                            Storage::delete($zipFile);
 
-                        ActivityUpload::create(['file_path' => $fitFile]);
+                            ActivityUpload::create(['file_path' => $fitFile]);
+                        }
                     }
                 }
+                $page++;
             }
-
-            $page++;
         } while ($searching);
 
         Log::warning('Finished searching');
