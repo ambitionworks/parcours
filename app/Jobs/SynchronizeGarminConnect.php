@@ -45,7 +45,7 @@ class SynchronizeGarminConnect implements ShouldQueue
             throw new ErrorException('Attempting to synchonize when user does not have a profile!');
         }
 
-        // Auth::login($this->user);
+        Auth::login($this->user);
 
         // The "highwater" mark: The newest activity we have previously seen.
         $highwater = $this->user->garmin_connect_profile->highwater;

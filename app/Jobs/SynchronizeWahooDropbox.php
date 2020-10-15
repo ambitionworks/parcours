@@ -39,11 +39,11 @@ class SynchronizeWahooDropbox implements ShouldQueue
      */
     public function handle()
     {
-        Auth::login($this->user);
-
         if (!$this->user->wahoo_dropbox_profile->token) {
             throw new ErrorException('Attempting to synchonize when user does not have a token!');
         }
+
+        Auth::login($this->user);
 
         $highwater = $this->user->wahoo_dropbox_profile->highwater;
         $next_highwater = $highwater;
