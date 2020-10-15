@@ -120,6 +120,11 @@ class Activity extends Model
         return $this->performed_at->setTimezone(\Carbon\CarbonTimezone::createFromMinuteOffset($this->tz_offset / 60));
     }
 
+    public function getFitFileAttribute()
+    {
+        return new FitFile(Storage::path($this->upload->file_path));
+    }
+
     /**
      * Get (optionally time-sliced) GeoJson struct for an activity.
      *
