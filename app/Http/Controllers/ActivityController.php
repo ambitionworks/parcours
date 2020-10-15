@@ -19,23 +19,6 @@ class ActivityController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     *
-     * @param  \App\Activity  $activity
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Request $request, Activity $activity)
-    {
-        $activity->load('segments');
-
-        return view('activities.show', [
-            'activity' => $activity,
-            'laps' => $activity->getLaps(),
-            'segment_records' => $activity->getSegmentRecords(),
-        ]);
-    }
-
-    /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
