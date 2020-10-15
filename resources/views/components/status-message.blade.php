@@ -12,6 +12,10 @@
             $color = 'green';
             break;
     }
+    // Fool the CSS purger
+    // <div class="text-red-600 bg-red-100 border-red-300" />
+    // <div class="text-yellow-600 bg-yellow-100 border-yellow-300" />
+    // <div class="text-green-600 bg-green-100 border-green-300" />
 @endphp
 
 <div {{ $attributes->merge(['class' => "flex space-x-4 mb-4 px-4 py-2 text-$color-600 bg-$color-100"]) }}>
