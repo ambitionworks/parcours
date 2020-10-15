@@ -5,8 +5,8 @@ import 'leaflet'
 
 import 'leaflet-editable'
 
-import 'uPlot/dist/uPlot.min.css'
-import uPlot from 'uPlot'
+import 'uplot/dist/uPlot.min.css'
+import uPlot from 'uplot'
 window.uPlot = uPlot
 
 window.ProgressBar = require('progressbar.js')
