@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Crypt;
+use Illuminate\Support\Facades\Log;
 use dawguk\GarminConnect;
 
 class GarminConnectProfile extends Model
@@ -33,14 +34,15 @@ class GarminConnectProfile extends Model
     /**
      * Undocumented function
      *
-     * @return GarminConnect
+     * @return GarminConnect|class
      */
-    public function api(): GarminConnect
+    public function api()
     {
         try {
             $this->api = new GarminConnect(['username' => $this->email, 'password' => unserialize(Crypt::decryptString($this->password))]);
         } catch (\Exception $e) {
             $this->apiExceptionMessage = $e->getMessage();
+            Log::warning($e->getMessage(), [$this->email]);
             // Return an anonymous class so chained calls made against the
             // return of this method will not completely blow up.
             return new class {
