@@ -1,4 +1,5 @@
 <div>
+    @if ($total)
     <div x-data="{ open: false }" class="text-blue-100 mb-4">
         <div class="space-x-3">
             <x-jet-input placeholder="{{ __('Search by activity name ...') }}" class="h-8 w-64 text-gray-900 text-sm" wire:model.debounce.300ms="name" />
@@ -42,6 +43,7 @@
             </div>
         </div>
     </div>
+    @endif
     <x-activities.list :activities="$activities" :weekDividers="false" wire:key="activities">
         @if (!$total)
         <x-slot name="empty">
