@@ -1,3 +1,7 @@
+Sentry.init({
+    dsn: 'https://a835dcd4e6fa40a2ae0c4358bbbce553@o461921.ingest.sentry.io/5464441',
+});
+
 import 'alpinejs'
 
 /**

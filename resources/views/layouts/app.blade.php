@@ -8,6 +8,12 @@
 
         <title>@if (!empty($title)) {{ $title }} — @endif{{ config('app.name', 'Laravel') }}</title>
 
+        <script
+            src="https://browser.sentry-cdn.com/5.26.0/bundle.tracing.min.js"
+            integrity="sha384-o3PmxWd0Sgy+qiulNfK/K+YxK4Neya0uoBhAdI1YCdS6yuHZM7vN8v9r0cBDmQ9K"
+            crossorigin="anonymous"
+        ></script>
+
         <!-- Styles -->
         <link rel="stylesheet" href="{{ asset('css/app.css') }}">
         @livewireStyles
