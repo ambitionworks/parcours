@@ -4,9 +4,9 @@ namespace App\Http\Controllers\Activity;
 
 use App\Models\Activity;
 use App\Http\Controllers\Controller;
-use adriangibbons\phpFITFileAnalysis as FitFile;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Storage;
+use adriangibbons\phpFITFileAnalysis as FitFile;
 
 class AnalysisController extends Controller
 {
