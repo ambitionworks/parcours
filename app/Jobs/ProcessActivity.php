@@ -68,6 +68,20 @@ class ProcessActivity implements ShouldQueue
         $activity->max_speed = $fit->data_mesgs['session']['max_speed'] ?? null;
         $activity->max_cadence = $fit->data_mesgs['session']['max_cadence'] ?? null;
 
+        if ($activity->user->metric_profile) {
+            $activity->ftp = $activity->user->metric_profile->ftp;
+            $activity->hr_resting = $activity->user->metric_profile->hr_resting;
+            $activity->hr_max = $activity->user->metric_profile->hr_max;
+            $activity->hr_lt = $activity->user->metric_profile->hr_lt;
+        }
+
+        if (isset($activity->ftp)) {
+            $metrics = $fit->powerMetrics($activity->ftp);
+            $activity->np = $metrics['Normalised Power'];
+            $activity->tss = $metrics['Training Stress Score'];
+            $activity->if = $metrics['Intensity Factor'];
+        }
+
         if (isset($fit->data_mesgs['session']['start_position_lat'], $fit->data_mesgs['session']['start_position_long'])) {
             if (empty($activity->tz_offset) && isset($fit->data_mesgs['session']['start_position_lat'])) {
                 $tz = file_get_contents(
