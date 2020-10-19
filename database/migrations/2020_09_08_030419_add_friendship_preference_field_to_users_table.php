@@ -14,7 +14,7 @@ class AddFriendshipPreferenceFieldToUsersTable extends Migration
     public function up()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->tinyInteger('follower_preference')->default(1);
+            $table->tinyInteger('follower_preference')->default(0);
         });
     }
 
