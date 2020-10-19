@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Jobs\ProcessActivity;
+use App\Jobs\AccumulateStats;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -45,6 +46,8 @@ class Activity extends Model
         'performed_at' => 'datetime',
     ];
 
+    public static $statable = ['tss', 'distance', 'active_duration', 'ascent'];
+
     /**
      * The "booted" method of the model.
      *
@@ -58,6 +61,10 @@ class Activity extends Model
 
         static::created(function ($activity) {
             ProcessActivity::dispatch($activity);
+        });
+
+        static::deleting(function ($activity) {
+            AccumulateStats::dispatchNow($activity, AccumulateStats::OP_SUBTRACT);
         });
 
         static::deleted(function ($activity) {

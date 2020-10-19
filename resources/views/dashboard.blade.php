@@ -20,9 +20,9 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-12">
             <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
                 <div class="py-4 px-8 bg-white border-b border-gray-200">
-                    <div class="text-2xl font-bold text-gray-900">
+                    <h2 class="text-2xl font-bold text-gray-900">
                         {{ __('Your goal progress') }}
-                    </div>
+                    </h2>
                     <div class="mt-6 text-gray-500 divide-y space-y-6">
                         <div>
                             @forelse ($user->goals as $goal)
@@ -71,6 +71,7 @@
                     </div>
                 </div>
             </div>
+            <livewire:stats.dashboard-graph />
             <div>
                 <h2 class="mb-3 text-blue-100 text-3xl font-bold">{{ __('Following Feed') }}</h2>
                 <x-activities.list :activities="$activities" :showUser="true" />

@@ -44,7 +44,7 @@
         </div>
     </div>
     @endif
-    <x-activities.list :activities="$activities" :weekDividers="false" wire:key="activities">
+    <x-activities.list :activities="$activities" :weekDividers="true" wire:key="activities">
         @if (!$total)
         <x-slot name="empty">
             <div class="h-64 flex flex-col items-center justify-center">

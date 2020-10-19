@@ -75,7 +75,7 @@ class ProcessActivity implements ShouldQueue
             $activity->hr_lt = $activity->user->metric_profile->hr_lt;
         }
 
-        if (isset($activity->ftp)) {
+        if (isset($activity->ftp) && !empty($fit->data_mesgs['record']['power'])) {
             $metrics = $fit->powerMetrics($activity->ftp);
             $activity->np = $metrics['Normalised Power'];
             $activity->tss = $metrics['Training Stress Score'];
@@ -153,5 +153,7 @@ class ProcessActivity implements ShouldQueue
         }
 
         Cache::tags($cacheTags)->flush();
+
+        AccumulateStats::dispatchIf(!$activity->stats_accounted, $activity, AccumulateStats::OP_ADD);
     }
 }
