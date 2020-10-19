@@ -22,7 +22,7 @@
         <div class="h-16 w-16 relative text-gray-800" id="goal-{{ $goal->id }}"></div>
         <div class="mt-2 text-xs">
             @if ($goal->type === 'duration')
-                {{ round($progress / 3600) }} h
+                {{ floor($progress / 3600) }} h
                 {{ round(($progress % 3600) / 60) }} m
                 {{ __('of') }}
                 {{ $goal->goal / 3600 }} h
