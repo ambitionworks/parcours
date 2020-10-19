@@ -9,7 +9,7 @@
                 @if ($user->activities()->count())
                 <div class="flex flex-col justify-center items-center px-4">
                     <span class="py-1 px-3 rounded-full uppercase font-bold text-xs bg-blue-100 text-blue-700">{{ __('Latest activity') }}</span>
-                    <a href="{{ route('activities.show', $user->activities()->orderBy('performed_at', 'desc')->first()) }}">{{ $user->activities()->orderBy('performed_at', 'desc')->first()->name }}</a>
+                    <a href="{{ route('activities.show', $latest) }}">{{ $latest->name }}</a>
                 </div>
                 @endif
             </div>
