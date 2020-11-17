@@ -312,6 +312,8 @@
                                         {{ __('This activity has no performance data.') }}
                                     </x-status-message>
                                 </div>
+                                {{-- bg-red-100 bg-red-200 bg-red-300 bg-red-400 bg-red-500 bg-red-600 bg-red-700 --}}
+                                {{-- bg-purple-100 bg-purple-200 bg-purple-300 bg-purple-400 bg-purple-500 bg-purple-600 bg-purple-700 --}}
                                 <div x-show="initialized && typeof data.error === 'undefined'" class="flex space-x-5">
                                     <div class="w-1/3">
                                         <h3 class="mb-2 text-lg font-semibold text-gray-900">{{ __('Heart Rate Zones') }}</h3>
