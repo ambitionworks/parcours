@@ -88,7 +88,8 @@ class SynchronizeGarminConnect implements ShouldQueue
 
                         $zipFile = 'garmin_connect_activity/' . $activity->activityId . '.zip';
                         $fitFile = 'garmin_connect_activity/' . $activity->activityId . '.fit';
-                        if (!Storage::exists($fitFile)) {
+                        $fitFileAlt = 'garmin_connect_activity/' . $activity->activityId . '_ACTIVITY.fit';
+                        if (!Storage::exists($fitFile) && !Storage::exists($fitFileAlt)) {
                             Storage::put($zipFile, $this->user->garmin_connect_profile->api()->getDataFile(GarminConnect::DATA_TYPE_FIT, $activity->activityId));
 
                             $zip = new ZipArchive;
@@ -97,7 +98,13 @@ class SynchronizeGarminConnect implements ShouldQueue
 
                             Storage::delete($zipFile);
 
-                            ActivityUpload::create(['file_path' => $fitFile]);
+                            if (Storage::exists($fitFile)) {
+                                ActivityUpload::create(['file_path' => $fitFile]);
+                            } else if (Storage::exists($fitFileAlt)) {
+                                ActivityUpload::create(['file_path' => $fitFileAlt]);
+                            } else {
+                                throw new \Exception('Missing .fit file.');
+                            }
                         }
                     }
                 }
