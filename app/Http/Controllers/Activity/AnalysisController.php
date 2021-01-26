@@ -21,7 +21,7 @@ class AnalysisController extends Controller
         $analysis = Cache::remember(sprintf('activity:%d:analysis', $activity->id), 3600, function () use ($activity) {
             $fit = new FitFile(Storage::path($activity->upload->file_path));
 
-            if (!isset($fit->data_mesgs['record']['heart_rate'], $fit->data_mesgs['record']['heart_rate'])) {
+            if (!isset($fit->data_mesgs['record']['heart_rate'], $fit->data_mesgs['record']['power'])) {
                 $output = [
                     'error' => 'no_data',
                 ];
@@ -55,13 +55,13 @@ class AnalysisController extends Controller
     private function buildOutput($fit, $hr_max, $ftp)
     {
         return [
-            'hr_partition' => count($fit->data_mesgs['record']['heart_rate'])
+            'hr_partition' => isset($fit->data_mesgs['record']['heart_rate']) && count($fit->data_mesgs['record']['heart_rate'])
                 ? $fit->hrPartionedHRmaximum($hr_max)
                 : [],
-            'power_partition' => count($fit->data_mesgs['record']['power'])
+            'power_partition' => isset($fit->data_mesgs['record']['power']) && count($fit->data_mesgs['record']['power'])
                 ? $fit->powerPartioned($ftp)
                 : [],
-            'power_metrics' => count($fit->data_mesgs['record']['power'])
+            'power_metrics' => isset($fit->data_mesgs['record']['power']) && count($fit->data_mesgs['record']['power'])
                 ? $fit->powerMetrics($ftp)
                 : [],
         ];
