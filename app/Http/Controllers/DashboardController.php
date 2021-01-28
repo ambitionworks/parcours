@@ -20,7 +20,7 @@ class DashboardController extends Controller
             'activities' => Activity::whereNotNull('processed_at')
                 ->whereIn('user_id', $request->user()->followings()->get()->pluck('id'))
                 ->orderByDesc('performed_at')->simplePaginate(10),
-            'latest' => $request->user()->activities()->orderBy('performed_at', 'desc')->first(),
+            'latest' => $request->user()->activities()->whereNotNull('performed_at')->orderBy('performed_at', 'desc')->first(),
         ]);
     }
 }
