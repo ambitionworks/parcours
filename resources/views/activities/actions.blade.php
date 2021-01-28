@@ -14,7 +14,9 @@
         >
             <div class="rounded-md bg-white shadow-xs">
                 <div class="py-1 font-normal" role="menu" aria-orientation="vertical" aria-labelledby="options-menu">
+                    @if (!$activity->stationary)
                     <a href="{{ route('activities.segments.create', $activity) }}" class="block px-4 py-2 text-sm leading-5 text-gray-700 hover:bg-gray-100 hover:text-gray-900 focus:outline-none focus:bg-gray-100 focus:text-gray-900" role="menuitem">Create Segment</a>
+                    @endif
                     @can('update', $activity)
                     <form method="POST" action="{{ route('activities.process', $activity) }}">
                         @csrf
